@@ -37,11 +37,14 @@ jobs:
 
       - name: Push to Drupal.org
         run: |
-          # Push main branch
-          git push drupal main --force-with-lease
+          # Fetch remote state first
+          git fetch drupal || true
+
+          # Push main branch (use --force for initial sync)
+          git push drupal main --force
 
           # Push all tags
-          git push drupal --tags --force-with-lease
+          git push drupal --tags --force
 
       - name: Sync status
         if: success()
