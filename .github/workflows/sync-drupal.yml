@@ -1,0 +1,50 @@
+name: Sync to Drupal.org
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+
+jobs:
+  sync:
+    name: Sync to Drupal.org Git
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for tags
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "elektrorl"
+          git config --global user.email "elektrorl@users.noreply.github.com"
+
+      - name: Setup Git credentials
+        env:
+          DRUPAL_GIT_TOKEN: ${{ secrets.DRUPAL_GIT_TOKEN }}
+        run: |
+          git config --global credential.helper store
+          echo "https://oauth2:${DRUPAL_GIT_TOKEN}@git.drupalcode.org" > ~/.git-credentials
+
+      - name: Add Drupal.org remote
+        run: |
+          git remote add drupal https://git.drupalcode.org/project/metatag_ai_generate.git || true
+          git remote -v
+
+      - name: Push to Drupal.org
+        run: |
+          # Push main branch
+          git push drupal main --force-with-lease
+
+          # Push all tags
+          git push drupal --tags --force-with-lease
+
+      - name: Sync status
+        if: success()
+        run: |
+          echo "✅ Successfully synced to Drupal.org"
+          echo "Branch: main"
+          echo "Tags: $(git tag -l | wc -l) tags pushed"
