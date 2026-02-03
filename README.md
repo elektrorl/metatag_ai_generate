@@ -20,8 +20,6 @@
 
 Writing compelling, SEO-optimized meta descriptions is time-consuming and requires expertise. **Metatag AI Generate** eliminates this burden by intelligently analyzing your content and generating professional meta descriptions in seconds.
 
-### Comparison with Metatag AI
-
 There is another similar module called [Metatag AI](https://www.drupal.org/project/metatag_ai).
 
 **Metatag AI Generate**:
