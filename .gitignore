@@ -111,3 +111,4 @@ error_log
 # Claude Code
 .claude.local.md
 CLAUDE.md
+/.claude/
